@@ -1,6 +1,13 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { MapContainer, TileLayer, Marker, useMapEvents, useMap, Popup } from "react-leaflet";
+import {
+  MapContainer,
+  TileLayer,
+  Marker,
+  useMapEvents,
+  useMap,
+  Popup,
+} from "react-leaflet";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
 
@@ -25,7 +32,7 @@ const customIcon = new L.Icon({
   iconSize: [25, 41],
   iconAnchor: [12, 41],
   popupAnchor: [1, -34],
-  shadowSize: [41, 41]
+  shadowSize: [41, 41],
 });
 
 const LocationPicker = ({ setLocation }) => {
@@ -81,7 +88,9 @@ const Report = () => {
     if (!searchQuery) return;
     try {
       const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(searchQuery)}`
+        `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
+          searchQuery
+        )}`
       );
 
       if (response.data.length === 0) {
@@ -119,7 +128,9 @@ const Report = () => {
         setIsLocating(false);
         switch (error.code) {
           case error.PERMISSION_DENIED:
-            setLocationError("Location access was denied. Please enable location permissions in your browser settings.");
+            setLocationError(
+              "Location access was denied. Please enable location permissions in your browser settings."
+            );
             break;
           case error.POSITION_UNAVAILABLE:
             setLocationError("Location information is unavailable.");
@@ -128,14 +139,16 @@ const Report = () => {
             setLocationError("Location request timed out. Please try again.");
             break;
           default:
-            setLocationError("An unknown error occurred while getting your location.");
+            setLocationError(
+              "An unknown error occurred while getting your location."
+            );
             break;
         }
       },
       {
         enableHighAccuracy: true,
         timeout: 10000,
-        maximumAge: 60000
+        maximumAge: 60000,
       }
     );
   };
@@ -149,7 +162,7 @@ const Report = () => {
     }
 
     setIsSubmitting(true);
-    
+
     const finalData = new FormData();
     finalData.append("title", formData.title);
     finalData.append("description", formData.description);
@@ -168,7 +181,7 @@ const Report = () => {
     try {
       const token = localStorage.getItem("token");
       await axios.post(
-        "http://localhost:5000/api/report/incidentupload",
+        `${import.meta.env.VITE_API}/api/report/incidentupload`,
         finalData,
         {
           headers: {
@@ -197,8 +210,13 @@ const Report = () => {
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-emerald-100 py-8 px-4 sm:px-6 lg:px-8">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-8">
-          <h1 className="text-3xl font-bold text-gray-800 mb-2">Report Environmental Issue</h1>
-          <p className="text-gray-600">Help us protect the environment by reporting issues in your community</p>
+          <h1 className="text-3xl font-bold text-gray-800 mb-2">
+            Report Environmental Issue
+          </h1>
+          <p className="text-gray-600">
+            Help us protect the environment by reporting issues in your
+            community
+          </p>
         </div>
 
         <div className="bg-white rounded-2xl shadow-lg overflow-hidden">
@@ -206,7 +224,10 @@ const Report = () => {
             <form onSubmit={handleSubmit} className="space-y-6">
               <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                 <div>
-                  <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="title"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Incident Title
                   </label>
                   <input
@@ -221,7 +242,10 @@ const Report = () => {
                 </div>
 
                 <div>
-                  <label htmlFor="category" className="block text-sm font-medium text-gray-700 mb-2">
+                  <label
+                    htmlFor="category"
+                    className="block text-sm font-medium text-gray-700 mb-2"
+                  >
                     Category
                   </label>
                   <select
@@ -241,7 +265,10 @@ const Report = () => {
               </div>
 
               <div>
-                <label htmlFor="description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="description"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Description
                 </label>
                 <textarea
@@ -261,28 +288,50 @@ const Report = () => {
                   Upload Photo Evidence
                 </label>
                 <div className="flex items-center justify-center w-full">
-                  <label htmlFor="photo" className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition p-4">
+                  <label
+                    htmlFor="photo"
+                    className="flex flex-col items-center justify-center w-full h-32 border-2 border-dashed border-gray-300 rounded-lg cursor-pointer hover:bg-gray-50 transition p-4"
+                  >
                     <div className="flex flex-col items-center justify-center">
-                      <svg className="w-8 h-8 mb-2 text-gray-500" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
-                        <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
+                      <svg
+                        className="w-8 h-8 mb-2 text-gray-500"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        fill="none"
+                        viewBox="0 0 20 16"
+                      >
+                        <path
+                          stroke="currentColor"
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth="2"
+                          d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"
+                        />
                       </svg>
                       <p className="mb-1 text-sm text-gray-500 text-center">
                         {photoFile ? (
-                          <span className="font-semibold text-green-600">{photoFile.name}</span>
+                          <span className="font-semibold text-green-600">
+                            {photoFile.name}
+                          </span>
                         ) : (
                           <>
-                            <span className="font-semibold">Click to upload</span> or drag and drop
+                            <span className="font-semibold">
+                              Click to upload
+                            </span>{" "}
+                            or drag and drop
                           </>
                         )}
                       </p>
-                      <p className="text-xs text-gray-500">PNG, JPG, GIF (MAX. 5MB)</p>
+                      <p className="text-xs text-gray-500">
+                        PNG, JPG, GIF (MAX. 5MB)
+                      </p>
                     </div>
-                    <input 
-                      id="photo" 
-                      type="file" 
-                      accept="image/*" 
-                      onChange={handlePhotoChange} 
-                      className="hidden" 
+                    <input
+                      id="photo"
+                      type="file"
+                      accept="image/*"
+                      onChange={handlePhotoChange}
+                      className="hidden"
                     />
                   </label>
                 </div>
@@ -293,7 +342,7 @@ const Report = () => {
                   <label className="block text-sm font-medium text-gray-700 mb-3">
                     Location Selection
                   </label>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-3 mb-4">
                     <input
                       type="text"
@@ -301,20 +350,34 @@ const Report = () => {
                       onChange={(e) => setSearchQuery(e.target.value)}
                       placeholder="Search for a location or address"
                       className="flex-1 border border-gray-300 rounded-lg px-4 py-3 focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-200"
-                      onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleLocationSearch())}
+                      onKeyPress={(e) =>
+                        e.key === "Enter" &&
+                        (e.preventDefault(), handleLocationSearch())
+                      }
                     />
                     <button
                       type="button"
                       onClick={handleLocationSearch}
                       className="px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition font-medium flex items-center justify-center gap-2"
                     >
-                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-5 w-5"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          strokeWidth={2}
+                          d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                        />
                       </svg>
                       Search
                     </button>
                   </div>
-                  
+
                   <div className="flex flex-col sm:flex-row gap-3 mb-3">
                     <button
                       type="button"
@@ -324,27 +387,52 @@ const Report = () => {
                     >
                       {isLocating ? (
                         <>
-                          <svg className="animate-spin h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                            <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                            <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                          <svg
+                            className="animate-spin h-5 w-5 text-white"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <circle
+                              className="opacity-25"
+                              cx="12"
+                              cy="12"
+                              r="10"
+                              stroke="currentColor"
+                              strokeWidth="4"
+                            ></circle>
+                            <path
+                              className="opacity-75"
+                              fill="currentColor"
+                              d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                            ></path>
                           </svg>
                           Locating...
                         </>
                       ) : (
                         <>
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-5 w-5"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                              clipRule="evenodd"
+                            />
                           </svg>
                           Use My Location
                         </>
                       )}
                     </button>
-                    
+
                     <div className="text-sm text-gray-600 flex items-center justify-center text-center px-2">
                       📍 Click on the map to select a location
                     </div>
                   </div>
-                  
+
                   {locationError && (
                     <div className="mt-2 p-3 bg-red-50 text-red-700 rounded-lg text-sm">
                       {locationError}
@@ -352,7 +440,10 @@ const Report = () => {
                   )}
                 </div>
 
-                <div className="relative h-80 w-full rounded-lg overflow-hidden border border-gray-300 shadow-sm" style={{ zIndex: 1 }}>
+                <div
+                  className="relative h-80 w-full rounded-lg overflow-hidden border border-gray-300 shadow-sm"
+                  style={{ zIndex: 1 }}
+                >
                   <div className="absolute top-3 right-3 z-[400] bg-white p-2 rounded-md shadow-md text-xs text-gray-600">
                     Zoom: Scroll | Move: Drag
                   </div>
@@ -371,7 +462,10 @@ const Report = () => {
                     <LocationPicker setLocation={setLocation} />
                     <MapCenterUpdater center={mapCenter} />
                     {location && (
-                      <Marker position={[location.lat, location.lng]} icon={customIcon}>
+                      <Marker
+                        position={[location.lat, location.lng]}
+                        icon={customIcon}
+                      >
                         <Popup>
                           <div className="text-sm font-medium">
                             Selected Location
@@ -384,11 +478,22 @@ const Report = () => {
 
                 {location && (
                   <div className="p-3 bg-green-50 rounded-lg text-sm text-green-800 flex items-center">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 mr-2 flex-shrink-0" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z" clipRule="evenodd" />
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      className="h-5 w-5 mr-2 flex-shrink-0"
+                      viewBox="0 0 20 20"
+                      fill="currentColor"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        d="M5.05 4.05a7 7 0 119.9 9.9L10 18.9l-4.95-4.95a7 7 0 010-9.9zM10 11a2 2 0 100-4 2 2 0 000 4z"
+                        clipRule="evenodd"
+                      />
                     </svg>
                     <span>
-                      <span className="font-medium">Selected Location:</span> Lat: <strong>{location.lat.toFixed(5)}</strong>, Lng: <strong>{location.lng.toFixed(5)}</strong>
+                      <span className="font-medium">Selected Location:</span>{" "}
+                      Lat: <strong>{location.lat.toFixed(5)}</strong>, Lng:{" "}
+                      <strong>{location.lng.toFixed(5)}</strong>
                     </span>
                   </div>
                 )}
@@ -401,9 +506,25 @@ const Report = () => {
               >
                 {isSubmitting ? (
                   <>
-                    <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
-                      <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4"></circle>
-                      <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+                    <svg
+                      className="animate-spin -ml-1 mr-3 h-5 w-5 text-white"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <circle
+                        className="opacity-25"
+                        cx="12"
+                        cy="12"
+                        r="10"
+                        stroke="currentColor"
+                        strokeWidth="4"
+                      ></circle>
+                      <path
+                        className="opacity-75"
+                        fill="currentColor"
+                        d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                      ></path>
                     </svg>
                     Submitting...
                   </>
@@ -416,7 +537,10 @@ const Report = () => {
         </div>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          <p>Your reports help us protect the environment and hold polluters accountable.</p>
+          <p>
+            Your reports help us protect the environment and hold polluters
+            accountable.
+          </p>
         </div>
       </div>
     </div>

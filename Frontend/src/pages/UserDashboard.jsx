@@ -36,10 +36,34 @@ const createCustomIcon = (color) => {
 };
 
 const statusColors = {
-  new: { bg: "bg-gray-100", text: "text-gray-800", border: "border-gray-300", icon: "🆕", map: "#9CA3AF" },
-  verified: { bg: "bg-blue-100", text: "text-blue-800", border: "border-blue-300", icon: "✅", map: "#3B82F6" },
-  in_progress: { bg: "bg-amber-100", text: "text-amber-800", border: "border-amber-300", icon: "🔄", map: "#F59E0B" },
-  resolved: { bg: "bg-green-100", text: "text-green-800", border: "border-green-300", icon: "✔️", map: "#10B981" },
+  new: {
+    bg: "bg-gray-100",
+    text: "text-gray-800",
+    border: "border-gray-300",
+    icon: "🆕",
+    map: "#9CA3AF",
+  },
+  verified: {
+    bg: "bg-blue-100",
+    text: "text-blue-800",
+    border: "border-blue-300",
+    icon: "✅",
+    map: "#3B82F6",
+  },
+  in_progress: {
+    bg: "bg-amber-100",
+    text: "text-amber-800",
+    border: "border-amber-300",
+    icon: "🔄",
+    map: "#F59E0B",
+  },
+  resolved: {
+    bg: "bg-green-100",
+    text: "text-green-800",
+    border: "border-green-300",
+    icon: "✔️",
+    map: "#10B981",
+  },
 };
 
 const statusLabels = {
@@ -62,7 +86,7 @@ const UserDashboard = () => {
       try {
         setIsLoading(true);
         const response = await axios.get(
-          `http://localhost:5000/api/report/get/${user.id}`
+          `${import.meta.env.VITE_API}/api/report/get/${user.id}`
         );
         setReports(response.data);
       } catch (error) {
@@ -74,9 +98,10 @@ const UserDashboard = () => {
     fetchReports();
   }, [user.id]);
 
-  const filteredReports = filter === "all" 
-    ? reports 
-    : reports.filter(report => report.status === filter);
+  const filteredReports =
+    filter === "all"
+      ? reports
+      : reports.filter((report) => report.status === filter);
 
   if (isLoading) {
     return (
@@ -108,7 +133,11 @@ const UserDashboard = () => {
               <div className="flex flex-wrap gap-2">
                 <button
                   onClick={() => setFilter("all")}
-                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${filter === "all" ? "bg-green-500 text-white shadow-md" : "bg-white text-gray-700 border border-gray-200"}`}
+                  className={`px-4 py-2 rounded-full text-sm font-medium transition-all ${
+                    filter === "all"
+                      ? "bg-green-500 text-white shadow-md"
+                      : "bg-white text-gray-700 border border-gray-200"
+                  }`}
                 >
                   All Reports
                 </button>
@@ -116,7 +145,16 @@ const UserDashboard = () => {
                   <button
                     key={key}
                     onClick={() => setFilter(key)}
-                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center ${filter === key ? statusColors[key].bg + " " + statusColors[key].text + " border " + statusColors[key].border + " shadow-md" : "bg-white text-gray-700 border border-gray-200"}`}
+                    className={`px-4 py-2 rounded-full text-sm font-medium transition-all flex items-center ${
+                      filter === key
+                        ? statusColors[key].bg +
+                          " " +
+                          statusColors[key].text +
+                          " border " +
+                          statusColors[key].border +
+                          " shadow-md"
+                        : "bg-white text-gray-700 border border-gray-200"
+                    }`}
                   >
                     <span className="mr-1">{statusColors[key].icon}</span>
                     {label}
@@ -127,20 +165,48 @@ const UserDashboard = () => {
               <div className="flex bg-white rounded-lg border border-gray-200 p-1">
                 <button
                   onClick={() => setView("grid")}
-                  className={`p-2 rounded-md transition-all ${view === "grid" ? "bg-green-100 text-green-800" : "text-gray-500"}`}
+                  className={`p-2 rounded-md transition-all ${
+                    view === "grid"
+                      ? "bg-green-100 text-green-800"
+                      : "text-gray-500"
+                  }`}
                   aria-label="Grid view"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"
+                    />
                   </svg>
                 </button>
                 <button
                   onClick={() => setView("map")}
-                  className={`p-2 rounded-md transition-all ${view === "map" ? "bg-green-100 text-green-800" : "text-gray-500"}`}
+                  className={`p-2 rounded-md transition-all ${
+                    view === "map"
+                      ? "bg-green-100 text-green-800"
+                      : "text-gray-500"
+                  }`}
                   aria-label="Map view"
                 >
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7" />
+                  <svg
+                    className="w-5 h-5"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      strokeWidth={2}
+                      d="M9 20l-5.447-2.724A1 1 0 013 16.382V5.618a1 1 0 011.447-.894L9 7m0 13l6-3m-6 3V7m6 10l4.553 2.276A1 1 0 0021 18.382V7.618a1 1 0 00-.553-.894L15 4m0 13V4m0 0L9 7"
+                    />
                   </svg>
                 </button>
               </div>
@@ -150,12 +216,16 @@ const UserDashboard = () => {
               <div className="bg-white rounded-2xl shadow-sm p-8 text-center max-w-2xl mx-auto">
                 <div className="text-6xl mb-4">📋</div>
                 <h3 className="text-2xl font-semibold text-gray-700 mb-2">
-                  {filter === "all" ? "No reports yet" : `No ${statusLabels[filter]} reports`}
+                  {filter === "all"
+                    ? "No reports yet"
+                    : `No ${statusLabels[filter]} reports`}
                 </h3>
                 <p className="text-gray-500 mb-6">
-                  {filter === "all" 
-                    ? "You haven't submitted any incident reports yet." 
-                    : `You don't have any ${statusLabels[filter].toLowerCase()} reports.`}
+                  {filter === "all"
+                    ? "You haven't submitted any incident reports yet."
+                    : `You don't have any ${statusLabels[
+                        filter
+                      ].toLowerCase()} reports.`}
                 </p>
                 <button className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-colors">
                   Report an Issue
@@ -174,7 +244,11 @@ const UserDashboard = () => {
                           {report.title}
                         </h3>
                         <span
-                          className={`flex items-center text-xs font-medium px-2.5 py-1 rounded-full ${statusColors[report.status].bg} ${statusColors[report.status].text} ${statusColors[report.status].border} border`}
+                          className={`flex items-center text-xs font-medium px-2.5 py-1 rounded-full ${
+                            statusColors[report.status].bg
+                          } ${statusColors[report.status].text} ${
+                            statusColors[report.status].border
+                          } border`}
                         >
                           {statusColors[report.status].icon}{" "}
                           <span className="ml-1 capitalize">
@@ -256,7 +330,10 @@ const UserDashboard = () => {
             ) : (
               <div className="bg-white rounded-2xl shadow-sm overflow-hidden p-4 h-96 sm:h-[500px]">
                 <MapContainer
-                  center={[reports[0]?.latitude || 0, reports[0]?.longitude || 0]}
+                  center={[
+                    reports[0]?.latitude || 0,
+                    reports[0]?.longitude || 0,
+                  ]}
                   zoom={12}
                   scrollWheelZoom={true}
                   className="h-full w-full rounded-lg"
@@ -277,8 +354,10 @@ const UserDashboard = () => {
                       <Popup>
                         <div className="p-2">
                           <h3 className="font-semibold">{report.title}</h3>
-                          <p className="text-sm text-gray-600 capitalize">{report.status.replace("_", " ")}</p>
-                          <button 
+                          <p className="text-sm text-gray-600 capitalize">
+                            {report.status.replace("_", " ")}
+                          </p>
+                          <button
                             className="mt-2 text-sm text-green-600 font-medium"
                             onClick={() => setSelectedReport(report)}
                           >
@@ -333,7 +412,8 @@ const UserDashboard = () => {
                       d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
                     ></path>
                   </svg>
-                  Submitted: {new Date(selectedReport.createdAt).toLocaleString()}
+                  Submitted:{" "}
+                  {new Date(selectedReport.createdAt).toLocaleString()}
                 </div>
               </div>
 
@@ -385,7 +465,11 @@ const UserDashboard = () => {
                           Status
                         </span>
                         <span
-                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${statusColors[selectedReport.status].bg} ${statusColors[selectedReport.status].text} ${statusColors[selectedReport.status].border} border`}
+                          className={`inline-flex items-center px-3 py-1 rounded-full text-sm font-medium ${
+                            statusColors[selectedReport.status].bg
+                          } ${statusColors[selectedReport.status].text} ${
+                            statusColors[selectedReport.status].border
+                          } border`}
                         >
                           {statusColors[selectedReport.status].icon}{" "}
                           <span className="ml-1 capitalize">
@@ -504,10 +588,7 @@ const UserDashboard = () => {
                 </h2>
                 <div className="h-80 w-full rounded-lg overflow-hidden border border-gray-200">
                   <MapContainer
-                    center={[
-                      selectedReport.latitude,
-                      selectedReport.longitude,
-                    ]}
+                    center={[selectedReport.latitude, selectedReport.longitude]}
                     zoom={16}
                     scrollWheelZoom={false}
                     className="h-full w-full"
@@ -521,7 +602,9 @@ const UserDashboard = () => {
                         selectedReport.latitude,
                         selectedReport.longitude,
                       ]}
-                      icon={createCustomIcon(statusColors[selectedReport.status].map)}
+                      icon={createCustomIcon(
+                        statusColors[selectedReport.status].map
+                      )}
                     />
                   </MapContainer>
                 </div>
