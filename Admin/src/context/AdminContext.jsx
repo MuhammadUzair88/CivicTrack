@@ -2,13 +2,11 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 
 const AdminContext = createContext();
 
-export function useAdmin() {
-  return useContext(AdminContext);
-}
-
 const STORAGE_KEY = "ecoTrackerAdmin";
 
 export function AdminProvider({ children }) {
+  const Api = import.meta.env.VITE_API;
+
   const [admin, setAdmin] = useState(() => {
     const storedAdmin = localStorage.getItem(STORAGE_KEY);
     return storedAdmin ? JSON.parse(storedAdmin) : null;
@@ -34,9 +32,14 @@ export function AdminProvider({ children }) {
     setAdmin,
     logout,
     isLoggedIn: !!admin,
+    Api,
   };
 
   return (
     <AdminContext.Provider value={value}>{children}</AdminContext.Provider>
   );
+}
+
+export function useAdmin() {
+  return useContext(AdminContext);
 }

@@ -9,8 +9,14 @@ export const StaffProvider = ({ children }) => {
     return saved ? JSON.parse(saved) : null;
   });
 
+  const logout = () => {
+    setUser(null);
+    localStorage.removeItem("staff");
+  };
+  const Api = import.meta.env.VITE_API;
+
   return (
-    <StaffContext.Provider value={{ user, setUser }}>
+    <StaffContext.Provider value={{ user, setUser, Api,logout }}>
       {children}
     </StaffContext.Provider>
   );

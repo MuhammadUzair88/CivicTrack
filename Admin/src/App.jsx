@@ -26,7 +26,7 @@ const App = () => {
   };
 
   return (
-    <div className="flex min-h-screen">
+    <div className="flex min-h-screen pt-12 md:pt-0">
       {/* Show Sidebar only if logged in admin */}
       {isLoggedIn && admin.role === "admin" && <Sidebar />}
 
