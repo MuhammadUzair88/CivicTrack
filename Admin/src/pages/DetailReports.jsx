@@ -14,6 +14,7 @@ import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import axios from "axios";
 import "leaflet/dist/leaflet.css";
+import { useAdmin } from "../context/AdminContext";
 
 // Fix Leaflet icon issue
 delete L.Icon.Default.prototype._getIconUrl;
@@ -39,6 +40,7 @@ const reportIcon = new L.Icon({
 });
 
 const DetailReports = () => {
+  const { Api } = useAdmin();
   const [report, setReport] = useState(null);
   const [loading, setLoading] = useState(true);
   const [verifying, setVerifying] = useState(false);
@@ -47,9 +49,7 @@ const DetailReports = () => {
 
   const fetchData = async () => {
     try {
-      const response = await axios.get(
-        `http://localhost:5000/api/report/getreport/${id}`
-      );
+      const response = await axios.get(`${Api}/api/report/getreport/${id}`);
       if (response.status === 200) {
         setReport(response.data.reports);
       }
@@ -63,9 +63,7 @@ const DetailReports = () => {
   const handleVerify = async () => {
     try {
       setVerifying(true);
-      const response = await axios.post(
-        `http://localhost:5000/api/report/change/${id}`
-      );
+      const response = await axios.post(`${Api}/api/report/change/${id}`);
       if (response.status === 200) {
         fetchData();
       }

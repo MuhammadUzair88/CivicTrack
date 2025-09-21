@@ -1,18 +1,18 @@
 import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
+import { useAdmin } from "../context/AdminContext";
 
 const StaffDetail = () => {
   const { id } = useParams();
   const navigate = useNavigate();
   const [staff, setStaff] = useState(null);
+  const { Api } = useAdmin();
 
   useEffect(() => {
     const fetchStaff = async () => {
       try {
-        const res = await axios.get(
-          `http://localhost:5000/api/staff/getstaff/${id}`
-        );
+        const res = await axios.get(`${Api}/api/staff/getstaff/${id}`);
         setStaff(res.data.staff);
       } catch (err) {
         console.error("Error fetching staff details", err.message);

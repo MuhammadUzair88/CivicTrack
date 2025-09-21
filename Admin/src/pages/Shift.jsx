@@ -17,6 +17,7 @@ import {
 import { MapContainer, TileLayer, Marker, Popup } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
+import { useAdmin } from "../context/AdminContext";
 
 // Fix Leaflet marker icons
 delete L.Icon.Default.prototype._getIconUrl;
@@ -53,6 +54,7 @@ const clockOutIcon = new L.Icon({
 });
 
 const Shift = () => {
+  const { Api } = useAdmin();
   const [shifts, setShifts] = useState([]);
   const [selectedShift, setSelectedShift] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -66,7 +68,7 @@ const Shift = () => {
 
   const fetchShifts = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/shift/get");
+      const res = await axios.get(`${Api}/api/shift/get`);
       setShifts(res.data);
     } catch (err) {
       console.error("Failed to fetch shifts", err);

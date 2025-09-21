@@ -11,8 +11,10 @@ import {
   FaFilter,
 } from "react-icons/fa";
 import axios from "axios";
+import { useAdmin } from "../context/AdminContext";
 
 const Reports = () => {
+  const { Api } = useAdmin();
   const [reports, setReports] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -36,9 +38,7 @@ const Reports = () => {
     try {
       setLoading(true);
       setError(null);
-      const response = await axios.get(
-        "http://localhost:5000/api/report/getall"
-      );
+      const response = await axios.get(`${Api}/api/report/getall`);
       if (response.status === 200) {
         setReports(response.data);
 
@@ -67,9 +67,7 @@ const Reports = () => {
 
     try {
       setDeletingId(id);
-      const res = await axios.delete(
-        `http://localhost:5000/api/report/deleteincident/${id}`
-      );
+      const res = await axios.delete(`${Api}/api/report/deleteincident/${id}`);
       if (res.data.success) {
         setReports(reports.filter((report) => report._id !== id));
       }

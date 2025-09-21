@@ -10,8 +10,10 @@ import {
   FaChevronRight,
 } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
+import { useAdmin } from "../context/AdminContext";
 
 const Staff = () => {
+  const { Api } = useAdmin();
   const [staff, setStaff] = useState([]);
   const [filteredStaff, setFilteredStaff] = useState([]);
   const [selected, setSelected] = useState(null);
@@ -38,7 +40,7 @@ const Staff = () => {
   // Fetch staff list from backend
   const fetchStaff = async () => {
     try {
-      const res = await axios.get("http://localhost:5000/api/staff/get");
+      const res = await axios.get(`${Api}/api/staff/get`);
       setStaff(res.data.staff);
       setFilteredStaff(res.data.staff);
     } catch (error) {
@@ -95,9 +97,7 @@ const Staff = () => {
       return;
 
     try {
-      const res = await axios.delete(
-        `http://localhost:5000/api/staff/staffdelete/${id}`
-      );
+      const res = await axios.delete(`${Api}/api/staff/staffdelete/${id}`);
       if (res.data.success) {
         alert("Staff Deleted Successfully");
         setStaff(staff.filter((member) => member._id !== id));
@@ -131,7 +131,7 @@ const Staff = () => {
     }
 
     try {
-      await axios.post("http://localhost:5000/api/staff/create", formData, {
+      await axios.post(`${Api}/api/staff/create`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },
